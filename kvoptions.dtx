@@ -1,13 +1,14 @@
 % \iffalse meta-comment
 %
 % File: kvoptions.dtx
-% Version: 2023-07-01 v3.16
+% Version: 2026-10-27 v3.17
 % Info: Key value format for package options
 %
 % Copyright (C)
 %    2004, 2006, 2007, 2009-2011 Heiko Oberdiek
 %    2016-2023 Oberdiek Package Support Group
-%    https://github.com/ho-tex/kvoptions/issues
+%    2026 LaTeX Project
+%    https://github.com/LaTeX-Package-Repositories/gettitlestring
 %
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either
@@ -22,8 +23,7 @@
 % This work has the LPPL maintenance status "maintained".
 %
 % The Current Maintainers of this work are
-% Heiko Oberdiek and the Oberdiek Package Support Group
-% https://github.com/ho-tex/kvoptions/issues
+% Heiko Oberdiek and the LaTeX Project.
 %
 % This work consists of the main source file kvoptions.dtx
 % and the derived files
@@ -85,7 +85,7 @@
 \input docstrip.tex
 \Msg{************************************************************************}
 \Msg{* Installation}
-\Msg{* Package: kvoptions 2023-07-01 v3.16 Key value format for package options (HO)}
+\Msg{* Package: kvoptions 2026-10-27 v3.17 Key value format for package options (HO)}
 \Msg{************************************************************************}
 
 \keepsilent
@@ -97,11 +97,12 @@
 This is a generated file.
 
 Project: kvoptions
-Version: 2023-07-01 v3.16
+Version: 2026-10-27 v3.17
 
 Copyright (C)
    2004, 2006, 2007, 2009-2011 Heiko Oberdiek
    2016-2023 Oberdiek Package Support Group
+   2026 LaTeX Project
 
 This work may be distributed and/or modified under the
 conditions of the LaTeX Project Public License, either
@@ -171,9 +172,10 @@ and the derived files
 %<*driver>
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesFile{kvoptions.drv}%
-  [2023-07-01 v3.16 Key value format for package options (HO)]%
+  [2026-10-27 v3.17 Key value format for package options (HO)]%
 \documentclass{ltxdoc}
 \usepackage{holtxdoc}[2011/11/22]
+\NewDocumentCommand{\ghissue}{m}{\href{https://github.com/LaTeX-Package-Repositories/kvoptions/issues/#1}{\texttt{\##1}}}
 \begin{document}
   \DocInput{kvoptions.dtx}%
 \end{document}
@@ -185,9 +187,9 @@ and the derived files
 % \GetFileInfo{kvoptions.drv}
 %
 % \title{The \xpackage{kvoptions} package}
-% \date{2023-07-01 v3.16}
+% \date{2026-10-27 v3.17}
 % \author{Heiko Oberdiek\thanks
-% {Please report any issues at \url{https://github.com/ho-tex/kvoptions/issues}}}
+% {Please report any issues at \url{https://github.com/LaTeX-Package-Repositories/gettitlestring/issues}}}
 %
 % \maketitle
 %
@@ -294,7 +296,7 @@ and the derived files
 % the package that are defined with \xpackage{keyval}'s
 % interface within the family \meta{family}. It acts the
 % same way as \LaTeX's \cs{ProcessOptions*}. In a package,
-% unknown global options are ignored, in a class, they
+% unknown global options are ignored; in a class, they
 % are added to the unknown option list. The known global
 % options and all local options are passed to \xpackage{keyval}'s
 % \cs{setkeys} command for executing the options.
@@ -312,7 +314,7 @@ and the derived files
 % \begin{declcs}{ProcessLocalKeyvalOptions}\,\M{family}\\
 %   \cs{ProcessLocalKeyvalOptions} \*
 % \end{declcs}
-% This macro has the same syntax and works similar as
+% This macro has the same syntax and works similar to
 % \cs{ProcessKeyvalOptions}. However, it ignores
 % global options and only processes the local package options.
 % Therefore, it only can be used inside a package.
@@ -326,7 +328,7 @@ and the derived files
 %
 % \begin{declcs}{SetupKeyvalOptions}\,\texttt{\{}\\
 %   \hspace{1.5em}|family|\,|=|\,\meta{family}|,|\\
-%   \hspace{1.5em}|prefix|\,|=|\,\meta{prefix}\\
+%   \hspace{1.5em}|prefix|\,|=|\,\meta{prefix}|,|\\
 %   \hspace{1.5em}|setkeys|\,|=|\,\meta{setkeys command}\\
 %   \texttt{\}}
 % \end{declcs}
@@ -376,10 +378,10 @@ and the derived files
 %
 % The options for \cs{ProcessKeyvalOptions} are defined
 % by \xpackage{keyval}'s \cs{define@key}.
-% Common purposes of such keys are boolean switches, they
-% enable or disable something. Or they store a name or some kind of
-% string in a macro. The following commands help the user. He
-% declares what he wants and \xpackage{kvoptions} take care of
+% Common purposes of such keys are boolean switches: they
+% enable or disable something or they store a name, or some kind of
+% string, in a macro. The following commands help the user. He
+% declares what he wants and \xpackage{kvoptions} takes care of
 % the key definition, resource allocation and initialization.
 %
 % In order to avoid name clashes of macro names, internal
@@ -448,12 +450,12 @@ and the derived files
 %   |\define@key{foobar}{verbose}[true]{|\dots|}|
 % \end{quote}
 % The option code configures the boolean option in the following way:
-% If the author specifies |true| or |false|, then the switch is
+% if the author specifies |true| or |false|, then the switch is
 % turned on or off respectively. Also, the option can be given without
 % explicit value. Then the switch is enabled.
 % Other values are reported as errors.
 %
-% Now the switch is ready to use in the package/class, e.g.:
+% After a \cs{ProcessKeyvalOptions*}, the switch is ready to use in the package/class, e.g.:
 % \begin{quote}
 %   |\iffoobar@verbose|\\
 %   \qquad\textit{\% print verbose message}\\
@@ -461,7 +463,7 @@ and the derived files
 %   \qquad\textit{\% be quiet}\\
 %   |\fi|
 % \end{quote}
-% Users of package \cs{ifthen} can use the switch as
+% Users of package \xpackage{ifthen} can use the switch as a
 % boolean:
 % \begin{quote}
 %   |\boolean{foobar@verbose}|
@@ -490,15 +492,15 @@ and the derived files
 % \begin{declcs}{DeclareVoidOption}\,\M{key}\,\M{code}
 % \end{declcs}
 % \cs{ProcessKeyvalOptions} can be extended to recognize
-% options that are declared in traditional way by \cs{DeclareOption}.
+% options that are declared in the traditional way by \cs{DeclareOption}.
 % But in case of the error that the user specifies a value, then
-% this option would not recognized as key value option because
-% of \cs{DeclareOption} and not detected as traditional option
+% this option would not be recognized as a key value option because
+% of \cs{DeclareOption} and not detected as a traditional option
 % because of the value part. The user would get an unknown option
 % error, difficult to understand.
 %
 % \cs{DeclareVoidOption} solves
-% this problem. It defines the option \meta{key} as key value option.
+% this problem. It defines the option \meta{key} as a key value option.
 % If the user specifies a value, a warning is given and the
 % value is ignored.
 %
@@ -534,7 +536,7 @@ and the derived files
 % than the error message from package \xpackage{keyval} that
 % is given otherwise.
 %
-% A Class ignores unknown options and puts them on the
+% A class ignores unknown options and puts them on the
 % unused option list. Let \LaTeX\ do the job and just
 % call \cs{OptionNotUsed}. Or the options can be passed to
 % another class that is later loaded.
@@ -546,7 +548,7 @@ and the derived files
 % \end{declcs}
 % Both macros mark package options as local options. That means
 % that they are ignored by \cs{ProcessKeyvalOptions} if they are given
-% as global options. \cs{DeclareLocalOption} takes one option,
+% as global options. \cs{DeclareLocalOption} takes one option.
 % \cs{DeclareLocalOptions} expects a comma-separated list of options.
 %
 % \subsubsection{Dynamic options}
@@ -595,7 +597,7 @@ and the derived files
 % \begin{description}
 % \item[\texttt{undef}:] The option will be undefined.
 %   If it is called, \cs{setkeys} reports an error because
-%   of unknown key.
+%   of an unknown key.
 % \item[\texttt{error} or \texttt{warning}:] Use of the
 %  option will cause an error or warning message.
 %  Also, these actions require that exclusively either the
@@ -741,7 +743,7 @@ and the derived files
 %
 % \section{Example}
 %
-% The following example defined a package that serves some
+% The following example defines a package that serves some
 % private color management. A boolean option \xoption{print} enables
 % print mode without colors. An option \xoption{emph} redefines
 % \cs{emph} to print in the given color. And the driver
@@ -1152,7 +1154,7 @@ and the derived files
   \fi
 \expandafter\x\csname ver@kvoptions.sty\endcsname
 \ProvidesPackage{kvoptions}%
-  [2023-07-01 v3.16 Key value format for package options (HO)]%
+  [2026-10-27 v3.17 Key value format for package options (HO)]%
 %    \end{macrocode}
 %
 % \paragraph{Catcodes}
@@ -1830,20 +1832,19 @@ and the derived files
 %    \end{macro}
 %    \begin{macro}{\KVO@AddToKeyvalOption}
 %    \begin{macrocode}
-\def\KVO@AddToKeyvalOption#1#2{%
+\def\KVO@AddToKeyvalOption#1#2#3{%
   \@ifundefined{KV@#1@#2}{%
     \PackageWarning{kvoptions}{%
       Key `#2' of family `#1' does not exist.\MessageBreak
       Ignoring \string\AddToKeyvalOption
     }%
-    \@gobble
   }{%
     \edef\KVO@next{%
       \noexpand\KVO@@AddToKeyvalOption
       \expandafter\noexpand\csname KV@#1@#2\endcsname
     }%
     \afterassignment\KVO@next
-    \def\KVO@temp##1%
+    \def\KVO@temp##1{#3}%
   }%
 }
 %    \end{macrocode}
@@ -2286,7 +2287,7 @@ and the derived files
 \TMP@EnsureCode{124}{12}% |
 \edef\KVO@AtEnd{\KVO@AtEnd\noexpand\endinput}
 \ProvidesPackage{kvoptions-patch}%
-  [2023-07-01 v3.16 LaTeX patch for keyval options (HO)]%
+  [2026-10-27 v3.17 LaTeX patch for keyval options (HO)]%
 %    \end{macrocode}
 %
 %    Check for \eTeX.
@@ -3004,7 +3005,7 @@ and the derived files
 %   \begin{Version}{2006/08/17 v2.3}
 %   \item
 %     \cs{DeclareBooleanOption} renamed to \cs{DeclareBoolOption}
-%     to avoid a name clash with package \cs{ifoption}.
+%     to avoid a name clash with package \xpackage{ifoption}.
 %   \end{Version}
 %   \begin{Version}{2006/08/22 v2.4}
 %   \item
@@ -3021,7 +3022,7 @@ and the derived files
 %   \end{Version}
 %   \begin{Version}{2007/06/11 v2.7}
 %   \item
-%     The patch part fixes \LaTeX bug latex/3965.
+%     The patch part fixes \LaTeX{} bug latex/3965.
 %   \end{Version}
 %   \begin{Version}{2007/10/02 v2.8}
 %   \item
@@ -3103,13 +3104,17 @@ and the derived files
 %   \begin{Version}{2020-10-07 v3.14}
 %   \item \xpackage{kvoptions-patch} is not compatible with a
 %     \LaTeX\ 2020-10-01 or newer and so it will abort loading if it detects it.
-%     This fixes github issue \#5.
+%     This fixes github issue \ghissue{5}.
 %   \end{Version}
 %   \begin{Version}{2022-06-15 v3.15}
-%   \item Remove only the key from the \cs{@unusedoptionlist}
+%   \item Remove only the key from the \cs{@unusedoptionlist}.
 %   \end{Version}
 %   \begin{Version}{2023-07-01 v3.16}
-%   \item Updated documentation PR/10
+%   \item Updated documentation PR/10.
+%   \end{Version}
+%   \begin{Version}{2026-10-27 v3.17}
+%   \item Fix issue with spaces in \cs{AddToKeyvalOption} declarations (\ghissue{2}).
+%   \item Update maintainer to the \LaTeX{} Project.
 %   \end{Version}
 % \end{History}
 %
